@@ -293,13 +293,16 @@ var makeReactContainer = function makeReactContainer(Component) {
       classCallCheck(this, ReactInVue);
 
       /**
-       * We create a stateful component in order to attach a ref on it. We will use that ref to
-       * update component's state, which seems better than re-rendering the whole thing with
-       * ReactDOM.
+       * We previously created a stateful component in order to attach a ref on it.
+       * We have used that ref to update component's state, which seemed better
+       * than re-rendering the whole thing with ReactDOM.
+       * Since React 16.5.0 the above would have logged errors.
+       * So, we continue to shallow copy props.
+       * See https://github.com/facebook/react/pull/11658
        */
       var _this = possibleConstructorReturn(this, (ReactInVue.__proto__ || Object.getPrototypeOf(ReactInVue)).call(this, props));
 
-      _this.state = props;
+      _this.state = _extends({}, props);
       return _this;
     }
 
@@ -336,7 +339,7 @@ var makeReactContainer = function makeReactContainer(Component) {
 var ReactWrapper = {
   props: ['component', 'passedProps'],
   render: function render(createElement) {
-    var parentTag = this.$props.passedProps && this.$props.passedProps.vueraParentTag ? this.$props.passedProps.vueraParentTag : 'div';
+    var parentTag = this.$attrs && this.$attrs.vueraParentTag ? this.$attrs.vueraParentTag : 'div';
     return createElement(parentTag, { ref: 'react' });
   },
 

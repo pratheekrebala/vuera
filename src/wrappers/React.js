@@ -10,11 +10,12 @@ const makeReactContainer = Component => {
       super(props)
 
       /**
-       * We previously created a stateful component in order to attach a ref on it. We have used that ref to
-       * update component's state, which seemed better than re-rendering the whole thing with
-       * ReactDOM.
-       * Since React 16.5.0 the above would have logged errors, so we continue to shallow copy props. See
-       * https://github.com/facebook/react/pull/11658
+       * We previously created a stateful component in order to attach a ref on it.
+       * We have used that ref to update component's state, which seemed better
+       * than re-rendering the whole thing with ReactDOM.
+       * Since React 16.5.0 the above would have logged errors.
+       * So, we continue to shallow copy props.
+       * See https://github.com/facebook/react/pull/11658
        */
       this.state = { ...props }
     }
@@ -46,10 +47,7 @@ const makeReactContainer = Component => {
 export default {
   props: ['component', 'passedProps'],
   render (createElement) {
-    const parentTag =
-      this.$props.passedProps && this.$props.passedProps.vueraParentTag
-        ? this.$props.passedProps.vueraParentTag
-        : 'div'
+    const parentTag = this.$attrs && this.$attrs.vueraParentTag ? this.$attrs.vueraParentTag : 'div'
     return createElement(parentTag, { ref: 'react' })
   },
   methods: {
