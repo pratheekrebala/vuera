@@ -333,7 +333,8 @@ var makeReactContainer = function makeReactContainer(Component) {
 var ReactWrapper = {
   props: ['component', 'passedProps'],
   render: function render(createElement) {
-    return createElement('div', { ref: 'react' });
+    var parentTag = this.$props.passedProps && this.$props.passedProps.vueraParentTag ? this.$props.passedProps.vueraParentTag : 'div';
+    return createElement(parentTag, { ref: 'react' });
   },
 
   methods: {

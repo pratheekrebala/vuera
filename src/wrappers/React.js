@@ -35,9 +35,7 @@ const makeReactContainer = Component => {
       const wrappedChildren = this.wrapVueChildren(children)
 
       return (
-        <Component {...rest}>
-          {children && <VueWrapper component={wrappedChildren} />}
-        </Component>
+        <Component {...rest}>{children && <VueWrapper component={wrappedChildren} />}</Component>
       )
     }
   }
@@ -46,7 +44,11 @@ const makeReactContainer = Component => {
 export default {
   props: ['component', 'passedProps'],
   render (createElement) {
-    return createElement('div', { ref: 'react' })
+    const parentTag =
+      this.$props.passedProps && this.$props.passedProps.vueraParentTag
+        ? this.$props.passedProps.vueraParentTag
+        : 'div'
+    return createElement(parentTag, { ref: 'react' })
   },
   methods: {
     mountReactComponent (component) {
